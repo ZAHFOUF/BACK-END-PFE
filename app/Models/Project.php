@@ -14,11 +14,13 @@ class Project extends Model
 
     protected $fillable = [
         'name',
-        'description',
+        'des',
         'budget',
-        'organization_id',
+        'status' ,
+        'progress' ,
+        'org',
         'start_date',
-        'end_date'
+        'end_date' ,
     ];
 
     public $timestamps = false;
@@ -28,7 +30,7 @@ class Project extends Model
         return $this->hasMany(Phase::class);
     }
 
-    public function organisation(): BelongsTo
+    public function organizations(): BelongsTo
     {
         return $this->belongsTo(Organization::class);
     }

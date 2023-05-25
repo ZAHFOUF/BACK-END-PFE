@@ -25,8 +25,8 @@ class UserRequest extends FormRequest
         return [
             'name' => 'required|min:5',
             'prenom' => 'required|min:5',
-            'photo' => 'required|image',
-            'phone_number' => ['required', Rule::regex('/^(?:\+|00)(212|0)(\d{9})$/')],
+            'photo' => 'image',
+            'phone_number' => ['required'],
             'email' => 'required|email|unique:users,email',
             'roles' => 'required',
         ];

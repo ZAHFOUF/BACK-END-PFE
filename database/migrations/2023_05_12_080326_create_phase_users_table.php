@@ -11,16 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('livrables', function (Blueprint $table) {
-            $table->id('code');
-            $table->string('name');
-            $table->longText('description');
-            $table->string('filePath');
-            $table->string('External');
-
-
-            // Relationships
+        Schema::create('phase_users', function (Blueprint $table) {
             $table->foreignId('phase')->constrained('phases')->references('code')->onDelete('cascade');;
+            $table->foreignId('user')->constrained('users')->onDelete('cascade');;
+
+            $table->primary(['phase', 'user']);
             $table->timestamps();
         });
     }
@@ -30,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('livrables');
+        Schema::dropIfExists('phase_users');
     }
 };

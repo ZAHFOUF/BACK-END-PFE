@@ -54,10 +54,5 @@ class User extends Authenticatable
         return $this->belongsToMany(Phase::class);
     }
 
-    public function getEmailAttribute($value)
-    {
-        if ($value == "admin@gmail.com") {
-            return $value;
-        }
-    }
+
 }

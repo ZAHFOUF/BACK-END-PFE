@@ -13,15 +13,23 @@ class ProjectPolicy
      */
     public function viewAny(User $user): bool
     {
+        return $user->hasRole(['directeur', 'secretaire', 'admin']) ? true : false;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Project $project): bool
+    public function view(User $user): bool
     {
         return $user->hasRole(['directeur', 'secretaire', 'admin']) ? true : false;
     }
+
+    public function viewMyProject(User $user): bool
+    {
+        return $user->hasRole(['chef_projet']) ? true : false;
+    }
+
+
 
     /**
      * Determine whether the user can create models.
@@ -34,7 +42,7 @@ class ProjectPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Project $project): bool
+    public function update(User $user): bool
     {
         return $user->hasRole(['directeur', 'secretaire', 'admin']) ? true : false;
     }
@@ -46,7 +54,7 @@ class ProjectPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Project $project): bool
+    public function delete(User $user): bool
     {
         return $user->hasRole(['directeur', 'admin']) ? true : false;
     }
@@ -54,7 +62,7 @@ class ProjectPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Project $project): bool
+    public function restore(User $user): bool
     {
         //
     }
@@ -62,7 +70,7 @@ class ProjectPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Project $project): bool
+    public function forceDelete(User $user): bool
     {
         //
     }

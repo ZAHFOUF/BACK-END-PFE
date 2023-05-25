@@ -19,7 +19,7 @@ class UserController extends Controller
         // check if the user has the ability to see all users
         abort_if(Gate::denies('showAny', User::class), 401, 'Unauthorized');
 
-        $users = User::all();
+        $users = User::all('*');
 
         return UserResource::collection($users);
     }
@@ -47,7 +47,7 @@ class UserController extends Controller
         abort_if(Gate::denies('show', User::class), 401, 'Unauthorized');
 
         // Retrieve the file path
-        $path = Storage::putFile('images', $request->file('photo'));
+        $path = $request->file('photo')->store('images','public') ;
 
         // store the user in the database
         $user = User::create([
@@ -67,18 +67,19 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(UserRequest $request, User $user)
+    public function update($id,Request $request)
     {
         // Retrieve the file path
-        $path = Storage::putFile('images', $request->file('photo'));
+     //   $path = $request->file('photo')->store('images','public') ;
 
         // update the user
-        $user->update([
-            'nom' => $request->nom,
-            'prenom' => $request->prenom,
-            'photo' => basename($path),
-            'email' => $request->email,
-        ]);
+
+        $user = User::findOrFail($id);
+        $user->name = $request->name;
+        $user->prenom = $request->prenom;
+        $user->email = $request->email;
+
+        $user->save();
 
         // update user roles
         $user->syncRoles($request->roles);

@@ -14,12 +14,15 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->longText('description');
+            $table->longText('des');
             $table->string('budget');
             $table->float('progress');
+            $table->string('status');
+
 
             // Relationships
-            $table->foreignId('organization_id')->constrained('organizations')->cascadeOnDelete();
+            $table->foreignId('org')->constrained('organizations')->cascadeOnDelete();
+            $table->foreignId('chef')->constrained('users')->cascadeOnDelete();
 
             // change to start_date / end_date
             $table->date('start_date');

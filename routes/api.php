@@ -3,9 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\LivrableController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\API\OrganismeController;
+use App\Http\Controllers\API\PhasesController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -48,10 +52,35 @@ Route::prefix('projects')
     ->middleware('auth:sanctum')
     ->group(function () {
         Route::get('/', [ProjectController::class, 'index']);
+        Route::get('/filter', [ProjectController::class, 'filter']);
         Route::get('/{id}', [ProjectController::class, 'show']);
         Route::post('/', [ProjectController::class, 'store']);
         Route::put('/{id}', [ProjectController::class, 'update']);
         Route::delete('/{id}', [ProjectController::class, 'destroy']);
+    });
+
+// Phases End points
+Route::prefix('phases')
+    ->middleware('auth:sanctum')
+    ->group(function () {
+        Route::get('/', [PhasesController::class, 'index']);
+        Route::get('/{id}', [PhasesController::class, 'show']);
+        Route::post('/', [PhasesController::class, 'store']);
+        Route::put('/{id}', [PhasesController::class, 'update']);
+        Route::delete('/{id}', [PhasesController::class, 'destroy']);
+    });
+
+
+
+ // Livrables End points
+Route::prefix('livrables')
+->middleware('auth:sanctum')
+->group(function () {
+Route::get('/', [LivrableController::class, 'index']);
+Route::get('/{id}', [LivrableController::class, 'show']);
+Route::post('/', [LivrableController::class, 'store']);
+Route::put('/{id}', [LivrableController::class, 'update']);
+Route::delete('/{id}', [LivrableController::class, 'destroy']);
     });
 
 

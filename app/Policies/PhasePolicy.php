@@ -13,7 +13,7 @@ class PhasePolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->hasRole(['directeur', 'chef_projet' , 'secretaire', 'admin']) ? true : false;
     }
 
     /**
@@ -21,7 +21,7 @@ class PhasePolicy
      */
     public function view(User $user, Phase $phase): bool
     {
-        //
+        return $user->hasRole(['directeur', 'chef_projet' , 'secretaire', 'admin']) ? true : false;
     }
 
     /**
@@ -29,23 +29,27 @@ class PhasePolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasRole(['chef_projet'  ,'admin']) ? true : false;
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Phase $phase): bool
+    public function update(User $user): bool
     {
-        //
+        return $user->hasRole(['chef_projet'  ,'admin']) ? true : false;
     }
+
+    /**
+     * Determiner si l'utilisateur Modifier montant projet
+     */
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Phase $phase): bool
+    public function delete(User $user): bool
     {
-        //
+        return $user->hasRole(['chef_projet'  ,'admin']) ? true : false;
     }
 
     /**
@@ -59,7 +63,7 @@ class PhasePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Phase $phase): bool
+    public function forceDelete(User $user, Phase $project): bool
     {
         //
     }

@@ -8,11 +8,11 @@ class UserPolicy
 {
     public function showAny(User $user)
     {
-        return $user->hasRole(['admin', 'directeur']) ? true : false;
+        return $user->hasRole(['directeur', 'chef_projet' , 'secretaire', 'admin']) ? true : false;
     }
 
     public function show(User $user)
     {
-        return $user->hasRole('admin') ? true : false;
+        return $user->hasRole(['directeur', 'chef_projet' , 'secretaire', 'admin']) ? true : false;
     }
 }

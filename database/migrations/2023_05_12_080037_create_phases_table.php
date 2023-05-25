@@ -12,16 +12,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('phases', function (Blueprint $table) {
-            $table->id();
-            $table->string('libelle');
+            $table->id('code');
+            $table->string('name');
             $table->longText('description');
-            $table->string('montant');
-            $table->boolean('etat_realisation');
-            $table->boolean('etat_facturation');
-            $table->boolean('etat_paiement');
+            $table->string('budgetPercentage');
+            $table->boolean('etat_facturation')->default(false);
+            $table->boolean('etat_paiement')->default(false);
+            $table->string('status')->default('Ongoing');
+            $table->json('deliverables')->default('[]');
+            $table->json('assignedEmployees')->default('[]');
+
+            // change to start_date / end_date
+             $table->date('startDate')->default(date('Y-m-d'));
+             $table->date('endDate')->default(date('Y-m-d', strtotime('+15 days')));
 
             // Relationships
-            $table->foreignId('prject_id')->constrained('projects')->cascadeOnDelete();
+            $table->foreignId('project')->constrained('projects')->cascadeOnDelete()->onDelete('cascade');
             $table->timestamps();
         });
     }
