@@ -27,7 +27,7 @@ class UserController extends Controller
     public function show($id)
     {
         // Check if the user has the abilty to see a specific user
-        abort_if(Gate::denies('show', User::class), 401, 'Unauthorized');
+        abort_if(Gate::denies('showAny', User::class), 401, 'Unauthorized');
 
         try {
             $user = User::findOrFail($id);
@@ -44,7 +44,7 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         // Check if the user has the abilty to see a specific user
-        abort_if(Gate::denies('show', User::class), 401, 'Unauthorized');
+        abort_if(Gate::denies('create', User::class), 401, 'Unauthorized');
 
         // Retrieve the file path
         $path = $request->file('photo')->store('images','public') ;

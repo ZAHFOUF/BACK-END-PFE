@@ -12,7 +12,10 @@ use App\Models\Project;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission ;
 use Spatie\Permission\Models\Role;
+
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,9 +24,106 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // store roles of the application
+
+
+
+        // Create Application roles
+       $admin =  Role::create(['name' => 'admin']);
+       $directeur =  Role::create(['name' => 'directeur']);
+       $secretaire =  Role::create(['name' => 'secretaire']);
+       $chef_projet =  Role::create(['name' => 'chef_projet']);
+       $comptable =   Role::create(['name' => 'comptable']);
+       $engineer =  Role::create(['name' => 'engineer']);
+       $technician = Role::create(['name' => 'technician']);
+
+       // Create Application Permission that gonna be a long
+
+       // users
+       Permission::create(['name' => "create-user"]);
+       Permission::create(['name' => "edit-user"]);
+       Permission::create(['name' => "delete-user"]);
+       Permission::create(['name' => "read-user"]);
+
+        // Organizations
+        Permission::create(['name' => "create-org"]);
+        Permission::create(['name' => "edit-org"]);
+        Permission::create(['name' => "delete-org"]);
+        Permission::create(['name' => "read-org"]);
+
+        // Projects
+        Permission::create(['name' => "create-project"]);
+        Permission::create(['name' => "edit-project"]);
+        Permission::create(['name' => "delete-project"]);
+        Permission::create(['name' => "read-project"]);
+        Permission::create(['name' => "read-his-project"]);
+
+
+        // Phases
+        Permission::create(['name' => "create-phase"]);
+        Permission::create(['name' => "edit-phase"]);
+        Permission::create(['name' => "delete-phase"]);
+        Permission::create(['name' => "read-phase"]);
+
+        // Livrables
+        Permission::create(['name' => "create-livrable"]);
+        Permission::create(['name' => "edit-livrable"]);
+        Permission::create(['name' => "delete-livrable"]);
+        Permission::create(['name' => "read-livrable"]);
+
+        // Roles
+        Permission::create(['name' => "create-role"]);
+        Permission::create(['name' => "edit-role"]);
+        Permission::create(['name' => "delete-role"]);
+        Permission::create(['name' => "read-role"]);
+
+        // settings
+        Permission::create(['name' => "refrech-db"]);
+
+
+
+       // affect permission to roles app
+
+       $directeur->givePermissionTo(['read-user']);
+       $secretaire->givePermissionTo(['read-user']);
+       $chef_projet->givePermissionTo(['read-user']);
+
+
+       $directeur->givePermissionTo(['read-org' , 'edit-org' ,"delete-org" ]);
+       $secretaire->givePermissionTo(["create-org" , 'read-org' , 'edit-org']);
+
+
+       $directeur->givePermissionTo(['read-project' , 'edit-project' ,"delete-project" ]);
+       $chef_projet->givePermissionTo(["read-his-project" ]);
+
+       $secretaire->givePermissionTo(["create-project" , 'read-project' , 'edit-project']);
+
+
+       $chef_projet->givePermissionTo(['read-phase' , 'edit-phase' ,"delete-phase" , "create-phase" ]);
+       $directeur->givePermissionTo(['read-phase' ]);
+       $secretaire->givePermissionTo(["read-phase" ]);
+       $chef_projet->givePermissionTo(['read-livrable' , 'edit-livrable' ,"create-livrable" , "delete-livrable" ]);
+       $directeur->givePermissionTo(['read-livrable' ]);
+       $secretaire->givePermissionTo(["read-livrable" ]);
+
+
+        // give to admin all permissions
+        $permissions = Permission::all('*');
+        $admin->givePermissionTo($permissions);
+
+
+
+
+
+
+
+
+
+
+
         // Store default users
 
-        $admin = User::create([
+        $user_1 = User::create([
             'name' => 'Younes',
             'prenom' => 'Zahfouf',
             'photo' => 'Hlt8qIQsfhoBjwp1pIlAGfYGbd1at1IOCKd0pM8P.png',
@@ -32,7 +132,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('admin'),
         ]);
 
-        $directeur = User::create([
+        $user_2 = User::create([
             'name' => 'directeur',
             'prenom' => 'directeur',
             'photo' => 'nothing',
@@ -41,7 +141,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('directeur'),
         ]);
 
-        $secretaire = User::create([
+        $user_3 = User::create([
             'name' => 'secretaire',
             'prenom' => 'secretaire',
             'photo' => 'nothing',
@@ -50,7 +150,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('secretaire'),
         ]);
 
-        $chef_projet = User::create([
+        $user_4 = User::create([
             'name' => 'cheff',
             'prenom' => 'project',
             'photo' => 'avatarchef.png',
@@ -59,7 +159,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('chef'),
         ]);
 
-        $comptable = User::create([
+        $user_5 = User::create([
             'name' => 'comptable',
             'prenom' => 'comptable',
             'photo' => 'nothing',
@@ -68,7 +168,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('comptable'),
         ]);
 
-        $user_1 = User::create([
+        $user_6 = User::create([
             'name' => 'John',
             'prenom' => 'Doe',
             'photo' => '1.png',
@@ -77,7 +177,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        $user_2 = User::create([
+        $user_7 = User::create([
             'name' => 'Jane',
             'prenom' => 'Smith',
             'photo' => '2.png',
@@ -86,7 +186,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        $user_3 = User::create([
+        $user_8 = User::create([
             'name' => 'Alex',
             'prenom' => 'Johnson',
             'photo' => '3.png',
@@ -95,24 +195,20 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        // Create Application roles
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'directeur']);
-        Role::create(['name' => 'secretaire']);
-        Role::create(['name' => 'chef_projet']);
-        Role::create(['name' => 'comptable']);
-        Role::create(['name' => 'engineer']);
-        Role::create(['name' => 'technician']);
 
-        // Assigning roles to Application users
-        $admin->assignRole('admin');
-        $directeur->assignRole('directeur');
-        $secretaire->assignRole('secretaire');
-        $chef_projet->assignRole('chef_projet');
-        $comptable->assignRole('comptable');
-        $user_1->assignRole('engineer');
-        $user_2->assignRole('engineer');
-        $user_3->assignRole('engineer');
+          // affect roles in his roles
+          $user_1->assignRole('admin');
+          $user_2->assignRole('directeur');
+          $user_3->assignRole('secretaire');
+          $user_4->assignRole('chef_projet');
+          $user_5->assignRole('comptable');
+          $user_6->assignRole('engineer');
+          $user_7->assignRole('engineer');
+          $user_8->assignRole('engineer');
+
+
+
+
 
         // Organisations seeding
 

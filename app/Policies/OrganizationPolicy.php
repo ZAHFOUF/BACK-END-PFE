@@ -7,12 +7,13 @@ use App\Models\Organization;
 
 class OrganizationPolicy
 {
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['secretaire', 'directeur', 'admin']) ? true : false;
+        return $user->hasPermissionTo('read-org') ? true : false;
     }
 
     /**
@@ -20,7 +21,7 @@ class OrganizationPolicy
      */
     public function view(User $user): bool
     {
-        return $user->hasRole(['secretaire', 'directeur', 'admin']) ? true : false;
+        return $user->hasPermissionTo('read-org') ? true : false;
     }
 
     /**
@@ -28,7 +29,7 @@ class OrganizationPolicy
      */
     public function store(User $user): bool
     {
-        return $user->hasRole(['secretaire', 'admin']) ? true : false;
+        return $user->hasPermissionTo('create-org') ? true : false;
     }
 
     /**
@@ -36,7 +37,7 @@ class OrganizationPolicy
      */
     public function update(User $user): bool
     {
-        return $user->hasRole(['secretaire', 'directeur', 'admin']) ? true : false;
+        return $user->hasPermissionTo('edit-org') ? true : false;
     }
 
     /**
@@ -44,7 +45,7 @@ class OrganizationPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->hasRole(['directeur', 'admin']) ? true : false;
+        return $user->hasPermissionTo('delete-org') ? true : false;
     }
 
     /**

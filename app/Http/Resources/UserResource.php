@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Role;
 
 class UserResource extends JsonResource
 {
@@ -15,6 +16,8 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
+
         return [
             'id' => $this->id,
             'nom' => $this->name,
@@ -22,7 +25,7 @@ class UserResource extends JsonResource
             'photo' => env('APP_URL').'/storage/images/'. $this->photo ,
             'phone_number' => $this->phone_number,
             'email' => $this->email,
-            'role' => RoleResource::collection($this->roles),
+            'role' => RoleResource::collection($this->roles) ,
         ];
     }
 }

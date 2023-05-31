@@ -7,6 +7,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -32,11 +33,20 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
+
+
         $authToken = $user->createToken('auth-token')->plainTextToken;
+        $user = new UserResource($user);
+        $roles = $user->roles; // Get the user's roles
+
+        $permissions = $roles->flatMap(function (Role $role) {
+            return $role->permissions;
+        })->pluck('name')->unique(); // Get the permissions associated with the roles
 
         return response()->json([
             'token' => $authToken,
-            'user' => (new UserResource($user)),
+            'user' => $user,
+            'permissions' => $permissions
         ]);
     }
 

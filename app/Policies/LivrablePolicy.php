@@ -6,13 +6,16 @@ use App\Models\User;
 
 class LivrablePolicy
 {
+
+
+
     /**
      * Create a new policy instance.
      */
 
      public function viewAny(User $user): bool
      {
-         return $user->hasRole(['directeur', 'chef_projet' , 'secretaire', 'admin']) ? true : false;
+         return $user->hasPermissionTo('read-livrable') ? true : false;
      }
 
      /**
@@ -20,7 +23,7 @@ class LivrablePolicy
       */
      public function view(User $user): bool
      {
-         return $user->hasRole(['directeur', 'chef_projet' , 'secretaire', 'admin']) ? true : false;
+         return $user->hasPermissionTo('read-livrable') ? true : false;
      }
 
      /**
@@ -28,7 +31,7 @@ class LivrablePolicy
       */
      public function create(User $user): bool
      {
-         return $user->hasRole(['chef_projet'  ,'admin']) ? true : false;
+         return $user->hasPermissionTo('create-livrable') ? true : false;
      }
 
      /**
@@ -36,7 +39,7 @@ class LivrablePolicy
       */
      public function update(User $user): bool
      {
-         return $user->hasRole(['chef_projet'  ,'admin']) ? true : false;
+         return $user->hasPermissionTo('edit-livrable') ? true : false;
      }
 
      /**
@@ -48,7 +51,7 @@ class LivrablePolicy
       */
      public function delete(User $user): bool
      {
-         return $user->hasRole(['chef_projet'  ,'admin']) ? true : false;
+         return $user->hasPermissionTo('delete-livrable') ? true : false;
      }
 
      /**

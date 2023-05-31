@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Mail\ProjectCreated;
 use App\Models\Organization;
+use App\Models\Phase;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Access\AuthorizationException;
-
-
-
+use Illuminate\Support\Facades\Mail;
 
 class ProjectController extends Controller
 {
@@ -40,6 +40,11 @@ class ProjectController extends Controller
             $project->chef->photo = env('APP_URL').'/storage/images/'.  $project->chef->photo;
 
         }
+           // calculate the progress bar
+           $all_phases = Phase::where("project",$project->id)->count();
+           $done_phases = Phase::where("project",$project->id)->where("status",'Done')->count();
+
+           $project->progress = $all_phases !== 0 ? intval( $done_phases*100/$all_phases) : 0 ;
     }
 
 
@@ -49,8 +54,7 @@ class ProjectController extends Controller
     }
 
 
-    public function filter(Request $req)
-    {
+    public function filter(Request $req) {
 
         try {
             // check if the user has the ability to see all organisations
@@ -74,12 +78,27 @@ class ProjectController extends Controller
             $project->chef->photo = env('APP_URL').'/storage/images/'.  $project->chef->photo;
 
         }
+            // calculate the progress bar
+             $all_phases = Phase::where("project",$project->id)->count();
+             $done_phases = Phase::where("project",$project->id)->where("status",'Done')->count();
+
+             $project->progress = 10.00;
     }
+
+
+
+
 
 
         return response()->json([
             'projects' => $projects
         ]);
+    }
+
+    public function send () {
+        Mail::to("zahfoufblogus@gmail.com")->send(new ProjectCreated());
+
+        return 'sending' ;
     }
 
 
@@ -88,8 +107,7 @@ class ProjectController extends Controller
     {
     }
 
-    public function store(Request $req)
-    {
+    public function store(Request $req) {
 
         try {
             // check if the user has the ability to see all organisations
@@ -99,6 +117,8 @@ class ProjectController extends Controller
                 'message' => 'You are unauthorized to do this action'
             ], 401);
         }
+
+
         $project = new Project;
 
         $project->name = $req->name;
@@ -120,8 +140,9 @@ class ProjectController extends Controller
             $project->org = $organization;
             $project->chef = $user;
             $project->chef->photo = env('APP_URL').'/storage/images/'.  $project->chef->photo;
-
         }
+
+
 
         return response()->json([
             'project' => $project

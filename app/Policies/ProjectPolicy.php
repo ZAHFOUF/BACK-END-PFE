@@ -8,12 +8,14 @@ use Illuminate\Auth\Access\Response;
 
 class ProjectPolicy
 {
+    // read - edit - delete - create
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['directeur', 'secretaire', 'admin']) ? true : false;
+        return $user->hasPermissionTo('read-project') ? true : false;
     }
 
     /**
@@ -21,12 +23,12 @@ class ProjectPolicy
      */
     public function view(User $user): bool
     {
-        return $user->hasRole(['directeur', 'secretaire', 'admin']) ? true : false;
+        return $user->hasPermissionTo('read-project') ? true : false;
     }
 
     public function viewMyProject(User $user): bool
     {
-        return $user->hasRole(['chef_projet']) ? true : false;
+        return $user->hasPermissionTo('read-his-project') ? true : false;
     }
 
 
@@ -36,7 +38,7 @@ class ProjectPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['secretaire', 'admin']) ? true : false;
+        return $user->hasPermissionTo('create-project') ? true : false;
     }
 
     /**
@@ -44,7 +46,7 @@ class ProjectPolicy
      */
     public function update(User $user): bool
     {
-        return $user->hasRole(['directeur', 'secretaire', 'admin']) ? true : false;
+        return $user->hasPermissionTo('edit-project') ? true : false;
     }
 
     /**
@@ -56,7 +58,7 @@ class ProjectPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->hasRole(['directeur', 'admin']) ? true : false;
+        return $user->hasPermissionTo('delete-project') ? true : false;
     }
 
     /**

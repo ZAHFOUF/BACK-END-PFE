@@ -8,12 +8,14 @@ use Illuminate\Auth\Access\Response;
 
 class PhasePolicy
 {
+     // read - edit - delete - create
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['directeur', 'chef_projet' , 'secretaire', 'admin']) ? true : false;
+        return $user->hasPermissionTo('read-phase') ? true : false;
     }
 
     /**
@@ -21,7 +23,7 @@ class PhasePolicy
      */
     public function view(User $user, Phase $phase): bool
     {
-        return $user->hasRole(['directeur', 'chef_projet' , 'secretaire', 'admin']) ? true : false;
+        return $user->hasPermissionTo('read-phase') ? true : false;
     }
 
     /**
@@ -29,7 +31,7 @@ class PhasePolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['chef_projet'  ,'admin']) ? true : false;
+        return $user->hasPermissionTo('create-phase') ? true : false;
     }
 
     /**
@@ -37,7 +39,7 @@ class PhasePolicy
      */
     public function update(User $user): bool
     {
-        return $user->hasRole(['chef_projet'  ,'admin']) ? true : false;
+        return $user->hasPermissionTo('edit-phase') ? true : false;
     }
 
     /**
@@ -49,7 +51,7 @@ class PhasePolicy
      */
     public function delete(User $user): bool
     {
-        return $user->hasRole(['chef_projet'  ,'admin']) ? true : false;
+        return $user->hasPermissionTo('delete-phase') ? true : false;
     }
 
     /**
